@@ -7,8 +7,10 @@
 //
 
 #import "ViewController.h"
+#import "LSShareContentView.h"
 
-@interface ViewController ()
+
+@interface ViewController () <LSShareDelegate>
 
 @end
 
@@ -16,12 +18,30 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+
+
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (IBAction)shareButtonClick:(id)sender {
+    NSLog(@"shareButtonClick");
+    
+    [[LSShareContentView sharedView] showWithCompletion:^(){
+        NSLog(@"显示分享视图");
+    }];
+    [LSShareContentView sharedView].delegate = self;
+}
+
+#pragma mark - 分享
+/**
+ * @brief 点击了分享按钮（Facebook、twitter、Instagram）
+ */
+- (void)shareWithType:(LSShareType)type
+{
+    [[LSLiveShareHelper defaultHelper]shareWithType:type Content:@"测试分享" Controller:self];
 }
 
 @end
